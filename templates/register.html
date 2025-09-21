@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد - LUXORA DZ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-soft: 0 10px 25px rgba(102, 126, 234, 0.1);
+            --shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.2);
+            --border-radius: 20px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem 0;
+        }
+        
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 15%;
+            right: 25%;
+            animation-delay: 6s;
+        }
+        
+        .floating-element:nth-child(4) {
+            width: 90px;
+            height: 90px;
+            bottom: 15%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            bottom: 40%;
+            right: 40%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(15px) rotate(240deg) scale(0.9); }
+        }
+        
+        .register-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem;
+        }
+        
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-hover);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .register-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .register-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%), 
+                        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.3;
+        }
+        
+        .brand-logo {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .brand-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .brand-subtitle {
+            opacity: 0.9;
+            font-weight: 400;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .register-body {
+            padding: 2rem;
+        }
+        
+        .form-floating {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-floating > .form-control {
+            height: 55px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.02);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-floating > .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+            background: white;
+        }
+        
+        .form-floating > label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 1.1rem;
+            z-index: 5;
+            transition: color 0.3s ease;
+        }
+        
+        .form-floating:focus-within .input-icon {
+            color: var(--primary-color);
+        }
+        
+        .form-floating > .form-control {
+            padding-left: 45px;
+        }
+        
+        .btn-register {
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-login-link {
+            background: var(--gradient-accent);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-register::before,
+        .btn-login-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-register:hover,
+        .btn-login-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn-register:hover::before,
+        .btn-login-link:hover::before {
+            left: 100%;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--text-light);
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(102, 126, 234, 0.2);
+        }
+        
+        .divider span {
+            padding: 0 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .back-home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.8rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        
+        .back-home:hover {
+            color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .back-home i {
+            margin-left: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Alert Styling */
+        .alert {
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, #fee 0%, #fdd 100%);
+            color: #c53030;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            color: #2d7738;
+            border-left: 4px solid #38a169;
+        }
+        
+        .form-text {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            padding-right: 45px;
+        }
+        
+        /* Two Column Layout */
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-floating {
+            flex: 1;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .register-container {
+                margin: 1rem;
+            }
+            
+            .register-header {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+            
+            .register-body {
+                padding: 1.5rem;
+            }
+            
+            .brand-title {
+                font-size: 1.4rem;
+            }
+            
+            .floating-element {
+                display: none;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                LUXORA DZ
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('index') }}">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('products') }}">المنتجات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('contact') }}">اتصل بنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">تسجيل الدخول</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="register-container">
+        <div class="register-card" data-aos="zoom-in">
+            <!-- Header -->
+            <div class="register-header">
+                <div class="brand-logo">
+                    <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo" style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
+                </div>
+                <h1 class="brand-title">LUXORA DZ</h1>
+                <p class="brand-subtitle">إنشاء حساب جديد</p>
+            </div>
+            
+            <!-- Body -->
+            <div class="register-body">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert" data-aos="fade-down">
+                                <i class="bi bi-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST" id="registerForm">
+                    <!-- Username Field -->
+                    <div class="form-floating" data-aos="fade-up" data-aos-delay="100">
+                        <i class="input-icon bi bi-person-fill"></i>
+                        <input type="text" class="form-control" id="username" name="username" 
+                               placeholder="اسم المستخدم" required>
+                        <label for="username">اسم المستخدم *</label>
+                        <div class="form-text">يجب أن يكون 3 أحرف على الأقل</div>
+                    </div>
+                    
+                    <!-- Email Field -->
+                    <div class="form-floating" data-aos="fade-up" data-aos-delay="150">
+                        <i class="input-icon bi bi-envelope-fill"></i>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               placeholder="البريد الإلكتروني" required>
+                        <label for="email">البريد الإلكتروني *</label>
+                    </div>
+                    
+                    <!-- First Name & Last Name Row -->
+                    <div class="form-row" data-aos="fade-up" data-aos-delay="200">
+                        <div class="form-floating">
+                            <i class="input-icon bi bi-person-badge"></i>
+                            <input type="text" class="form-control" id="first_name" name="first_name" 
+                                   placeholder="الاسم الأول">
+                            <label for="first_name">الاسم الأول</label>
+                        </div>
+                        <div class="form-floating">
+                            <i class="input-icon bi bi-person-badge-fill"></i>
+                            <input type="text" class="form-control" id="last_name" name="last_name" 
+                                   placeholder="اسم العائلة">
+                            <label for="last_name">اسم العائلة</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Phone Field -->
+                    <div class="form-floating" data-aos="fade-up" data-aos-delay="250">
+                        <i class="input-icon bi bi-telephone-fill"></i>
+                        <input type="tel" class="form-control" id="phone" name="phone" 
+                               placeholder="رقم الهاتف">
+                        <label for="phone">رقم الهاتف</label>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-floating" data-aos="fade-up" data-aos-delay="300">
+                        <i class="input-icon bi bi-lock-fill"></i>
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="كلمة المرور" required>
+                        <label for="password">كلمة المرور *</label>
+                        <div class="form-text">يجب أن تكون 6 أحرف على الأقل</div>
+                    </div>
+                    
+                    <!-- Confirm Password Field -->
+                    <div class="form-floating" data-aos="fade-up" data-aos-delay="350">
+                        <i class="input-icon bi bi-shield-lock-fill"></i>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" 
+                               placeholder="تأكيد كلمة المرور" required>
+                        <label for="confirm_password">تأكيد كلمة المرور *</label>
+                    </div>
+                    
+                    <!-- Register Button -->
+                    <button type="submit" class="btn btn-register" data-aos="fade-up" data-aos-delay="400">
+                        <i class="bi bi-person-plus me-2"></i>
+                        إنشاء الحساب
+                    </button>
+                </form>
+                
+                <!-- Divider -->
+                <div class="divider" data-aos="fade-up" data-aos-delay="450">
+                    <span>أو</span>
+                </div>
+                
+                <!-- Login Link Button -->
+                <a href="{{ url_for('login') }}" class="btn-login-link" data-aos="fade-up" data-aos-delay="500">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    هل لديك حساب؟ تسجيل الدخول
+                </a>
+                
+                <!-- Back to Home -->
+                <a href="{{ url_for('index') }}" class="back-home" data-aos="fade-up" data-aos-delay="550">
+                    <i class="bi bi-house-door"></i>
+                    العودة للصفحة الرئيسية
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Form validation and enhancement
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('كلمات المرور غير متطابقة');
+                return false;
+            }
+            
+            const button = this.querySelector('.btn-register');
+            button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>جاري إنشاء الحساب...';
+            button.disabled = true;
+        });
+        
+        // Real-time password confirmation validation
+        document.getElementById('confirm_password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.style.borderColor = '#e53e3e';
+            } else {
+                this.style.borderColor = '';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم استلام الطلب - LUXORA DZ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #4facfe;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-white: #ffffff;
+            --shadow-soft: 0 10px 25px rgba(102, 126, 234, 0.1);
+            --shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.2);
+            --border-radius: 20px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            right: 30%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(15px) rotate(240deg) scale(0.9); }
+        }
+        
+        .confirmation-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem;
+        }
+        
+        .confirmation-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-hover);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .success-header {
+            background: var(--gradient-success);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            position: relative;
+            z-index: 2;
+            animation: checkmark 0.8s ease-in-out;
+        }
+        
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+        
+        .success-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .success-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 500;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .confirmation-body {
+            padding: 2.5rem;
+        }
+        
+        .order-summary {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .order-detail {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .order-detail:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        
+        .order-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .order-value {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        .contact-message {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid #38a169;
+            position: relative;
+        }
+        
+        .contact-message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-success);
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .contact-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d7738;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-text {
+            color: #2d7738;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .btn-modern {
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary-modern {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .btn-outline-modern {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+        
+        .btn-outline-modern:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-home-primary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            box-shadow: var(--shadow-soft);
+            font-size: 1.1rem;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-home-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
+        }
+        
+        .btn-home-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-home-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(238, 90, 36, 0.4);
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .confirmation-container {
+                margin: 1rem;
+            }
+            
+            .success-header {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+            
+            .confirmation-body {
+                padding: 2rem 1.5rem;
+            }
+            
+            .success-title {
+                font-size: 1.5rem;
+            }
+            
+            .floating-element {
+                display: none;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                LUXORA DZ
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#products">المنتجات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">اتصل بنا</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="confirmation-container">
+        <div class="confirmation-card" data-aos="zoom-in">
+            <!-- Success Header -->
+            <div class="success-header">
+                <div class="success-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h1 class="success-title">تم استلام طلبك!</h1>
+                <p class="success-subtitle">شكراً لاختيارك LUXORA DZ</p>
+            </div>
+            
+            <!-- Confirmation Body -->
+            <div class="confirmation-body">
+                <!-- Order Summary -->
+                <div class="order-summary" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="mb-3">
+                        <i class="bi bi-receipt me-2"></i>
+                        ملخص الطلب
+                    </h3>
+                    <div class="order-detail">
+                        <span class="order-label">رقم الطلب:</span>
+                        <span class="order-value">#{{ order['id'] }}</span>
+                    </div>
+                    <div class="order-detail">
+                        <span class="order-label">المنتج:</span>
+                        <span class="order-value">{{ order['product_name'] }}</span>
+                    </div>
+                    <div class="order-detail">
+                        <span class="order-label">الكمية:</span>
+                        <span class="order-value">{{ order['quantity'] }}</span>
+                    </div>
+                    <div class="order-detail">
+                        <span class="order-label">رقم الهاتف:</span>
+                        <span class="order-value">{{ order['phone'] }}</span>
+                    </div>
+                    <div class="order-detail">
+                        <span class="order-label">الإجمالي:</span>
+                        <span class="order-value">{{ "%.2f"|format(order['total_price']) }} د.ج</span>
+                    </div>
+                </div>
+                
+                <!-- Contact Message -->
+                <div class="contact-message" data-aos="fade-up" data-aos-delay="200">
+                    <div class="contact-icon">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <h4 class="contact-title">سنتواصل معك قريباً لتأكيد الطلب</h4>
+                    <p class="contact-text">
+                        سيقوم فريقنا بالاتصال بك خلال 24 ساعة لتأكيد تفاصيل الطلب وترتيب التوصيل
+                    </p>
+                </div>
+                
+                <!-- Primary Back Home Button -->
+                <div class="text-center mb-4" data-aos="fade-up" data-aos-delay="250">
+                    <a href="{{ url_for('index') }}" class="btn-modern btn-home-primary">
+                        <i class="bi bi-house-heart-fill me-2"></i>
+                        العودة للصفحة الرئيسية
+                    </a>
+                </div>
+                
+                <!-- Additional Action Buttons -->
+                <div class="action-buttons" data-aos="fade-up" data-aos-delay="300">
+                    <a href="{{ url_for('index') }}#products" class="btn-modern btn-outline-modern">
+                        <i class="bi bi-grid me-2"></i>
+                        تصفح المزيد من المنتجات
+                    </a>
+                    <a href="#" class="btn-modern btn-outline-modern" onclick="window.print(); return false;">
+                        <i class="bi bi-printer me-2"></i>
+                        طباعة الطلب
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Confetti animation effect
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#4facfe', '#00f2fe'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.zIndex = '9999';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Add CSS for confetti animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                0% { transform: translateY(-100vh) rotate(0deg); }
+                100% { transform: translateY(100vh) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Start confetti animation on page load
+        window.addEventListener('load', function() {
+            setTimeout(createConfetti, 500);
+        });
+    </script>
+</body>
+</html>

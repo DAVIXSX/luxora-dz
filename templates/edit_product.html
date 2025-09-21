@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل المنتج - LUXORA DZ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4facfe;
+            --danger-color: #f5576c;
+            --warning-color: #feca57;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-warning: linear-gradient(135deg, #feca57 0%, #ff7043 100%);
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-soft: 0 10px 25px rgba(102, 126, 234, 0.1);
+            --shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.2);
+            --border-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        
+        /* Navigation */
+        .admin-nav {
+            background: var(--gradient-primary);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .nav-brand:hover {
+            color: white;
+        }
+        
+        .nav-links {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Main Content */
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .admin-header {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .admin-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        
+        /* Cards */
+        .admin-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-left: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        /* Form Styling */
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+        
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            height: 55px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.02);
+            transition: all 0.3s ease;
+        }
+        
+        .form-floating > .form-control:focus,
+        .form-floating > .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+            background: white;
+        }
+        
+        .form-floating > label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .form-floating > textarea.form-control {
+            height: 100px;
+        }
+        
+        /* Buttons */
+        .btn-modern {
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary-modern {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-success-modern {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .btn-danger-modern {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+        
+        /* Product Image Preview */
+        .image-preview {
+            width: 100%;
+            max-width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        
+        /* Alert Styling */
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            color: #2d7738;
+            border-left: 4px solid #38a169;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, #fee 0%, #fdd 100%);
+            color: #c53030;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #0d47a1;
+            border-left: 4px solid #1976d2;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+            
+            .admin-header {
+                padding: 1.5rem;
+            }
+            
+            .admin-card {
+                padding: 1.5rem;
+            }
+            
+            .admin-title {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="admin-nav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                LUXORA DZ
+            </a>
+            <div class="nav-links d-flex gap-3">
+                <a href="{{ url_for('index') }}" class="nav-link">
+                    <i class="bi bi-house me-1"></i>الرئيسية
+                </a>
+                <a href="{{ url_for('admin') }}" class="nav-link active">
+                    <i class="bi bi-gear me-1"></i>لوحة التحكم
+                </a>
+                <a href="{{ url_for('admin_requests') }}" class="nav-link">
+                    <i class="bi bi-inbox me-1"></i>طلبات المنتجات
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="bi bi-box-arrow-right me-1"></i>تسجيل الخروج
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1 class="admin-title">
+                <i class="bi bi-pencil-square me-2"></i>
+                تعديل المنتج
+            </h1>
+            <p class="admin-subtitle">تعديل تفاصيل المنتج - LUXORA DZ</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        <i class="bi bi-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Edit Product Form -->
+        <div class="admin-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-pencil"></i>
+                </div>
+                <h2 class="card-title">تعديل المنتج: {{ product.name }}</h2>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="name" placeholder="اسم المنتج" value="{{ product.name }}" required>
+                            <label>اسم المنتج *</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="price" placeholder="السعر" step="0.01" min="0" value="{{ product.price }}" required>
+                            <label>السعر *</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="category">
+                                <option value="">اختر الفئة</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}" {% if product.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label>الفئة</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" name="images" accept="image/*" multiple>
+                            <label>صور المنتج (يمكن اختيار عدة صور، اتركها فارغة للحفاظ على الصور الحالية)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="desc" placeholder="وصف المنتج" style="height: 100px;">{{ product.desc or '' }}</textarea>
+                            <label>وصف المنتج</label>
+                        </div>
+                    </div>
+                    {% if product.image %}
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">الصورة الحالية:</label>
+                        <div>
+                            <img src="{{ url_for('static', filename=product.image) }}" class="image-preview" alt="{{ product.name }}">
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-modern btn-success-modern">
+                        <i class="bi bi-check-circle me-2"></i>حفظ التغييرات
+                    </button>
+                    <a href="{{ url_for('admin') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

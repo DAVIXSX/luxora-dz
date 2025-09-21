@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - LUXORA DZ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4facfe;
+            --danger-color: #f5576c;
+            --warning-color: #feca57;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-warning: linear-gradient(135deg, #feca57 0%, #ff7043 100%);
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --shadow-soft: 0 10px 25px rgba(102, 126, 234, 0.1);
+            --shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.2);
+            --border-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        
+        /* Navigation */
+        .admin-nav {
+            background: var(--gradient-primary);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .nav-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .nav-brand:hover {
+            color: white;
+        }
+        
+        .nav-links {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Main Content */
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .admin-header {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .admin-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        
+        /* Cards */
+        .admin-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-left: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        /* Form Styling */
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+        
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            height: 55px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.02);
+            transition: all 0.3s ease;
+        }
+        
+        .form-floating > .form-control:focus,
+        .form-floating > .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+            background: white;
+        }
+        
+        .form-floating > label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .form-floating > textarea.form-control {
+            height: 100px;
+        }
+        
+        /* Buttons */
+        .btn-modern {
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary-modern {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-success-modern {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .btn-danger-modern {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+        }
+        
+        /* Product Group Styling */
+        .product-group {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product-group h5 {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .remove-product {
+            transition: all 0.2s ease;
+        }
+        
+        .remove-product:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Table Styling */
+        .modern-table {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            border: none;
+        }
+        
+        .modern-table thead {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .modern-table thead th {
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .modern-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .modern-table tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .modern-table tbody td {
+            padding: 1rem;
+            border: none;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        /* Alert Styling */
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            color: #2d7738;
+            border-left: 4px solid #38a169;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, #fee 0%, #fdd 100%);
+            color: #c53030;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #0d47a1;
+            border-left: 4px solid #1976d2;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+            
+            .admin-header {
+                padding: 1.5rem;
+            }
+            
+            .admin-card {
+                padding: 1.5rem;
+            }
+            
+            .admin-title {
+                font-size: 1.5rem;
+            }
+            
+            .modern-table {
+                font-size: 0.9rem;
+            }
+            
+            .modern-table thead th,
+            .modern-table tbody td {
+                padding: 0.5rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="admin-nav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                LUXORA DZ
+            </a>
+            <div class="nav-links d-flex gap-3">
+                <a href="{{ url_for('index') }}" class="nav-link">
+                    <i class="bi bi-house me-1"></i>الرئيسية
+                </a>
+                <a href="{{ url_for('admin') }}" class="nav-link active">
+                    <i class="bi bi-gear me-1"></i>لوحة التحكم
+                </a>
+                <a href="{{ url_for('admin_requests') }}" class="nav-link">
+                    <i class="bi bi-inbox me-1"></i>طلبات المنتجات
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="bi bi-box-arrow-right me-1"></i>تسجيل الخروج
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header" data-aos="fade-down">
+            <h1 class="admin-title">
+                <i class="bi bi-speedometer2 me-2"></i>
+                لوحة التحكم
+            </h1>
+            <p class="admin-subtitle">إدارة المنتجات والطلبات - LUXORA DZ</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert" data-aos="fade-down">
+                        <i class="bi bi-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Statistics -->
+        <div class="stats-grid" data-aos="fade-up">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <div class="stat-number">{{ total_products if total_products is defined else products|length }}</div>
+                <div class="stat-label">إجمالي المنتجات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-cart-check"></i>
+                </div>
+                <div class="stat-number">{{ orders|length }}</div>
+                <div class="stat-label">إجمالي الطلبات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="stat-number">{{ orders|sum(attribute='total_price')|int if orders else 0 }}</div>
+                <div class="stat-label">إجمالي المبيعات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-download"></i>
+                </div>
+                <div class="stat-label">
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('export_products') }}" class="btn btn-modern btn-outline-primary btn-sm" title="تصدير المنتجات">
+                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                        </a>
+                        <a href="{{ url_for('export_orders') }}" class="btn btn-modern btn-outline-success btn-sm" title="تصدير الطلبات">
+                            <i class="bi bi-receipt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="50">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+                <h2 class="card-title">بحث وتصفية المنتجات</h2>
+            </div>
+            
+            <form method="GET" action="{{ url_for('admin') }}" class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="search" placeholder="ابحث بالاسم أو الوصف" value="{{ search_query or '' }}">
+                        <label>بحث بالاسم أو الوصف</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select" name="category">
+                            <option value="">جميع الفئات</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" {% if category_filter == category.id %}selected{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>تصفية حسب الفئة</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <select class="form-select" name="sort">
+                            <option value="id" {% if sort_by == 'id' %}selected{% endif %}>الأحدث أولاً</option>
+                            <option value="name" {% if sort_by == 'name' %}selected{% endif %}>الاسم</option>
+                            <option value="price" {% if sort_by == 'price' %}selected{% endif %}>السعر</option>
+                        </select>
+                        <label>ترتيب حسب</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating">
+                        <select class="form-select" name="order">
+                            <option value="DESC" {% if sort_order == 'DESC' %}selected{% endif %}>تنازلي</option>
+                            <option value="ASC" {% if sort_order == 'ASC' %}selected{% endif %}>تصاعدي</option>
+                        </select>
+                        <label>الترتيب</label>
+                    </div>
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-modern btn-primary-modern">
+                        <i class="bi bi-search me-2"></i>بحث
+                    </button>
+                    <a href="{{ url_for('admin') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>مسح الفلاتر
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Add Product Form -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-plus-circle"></i>
+                </div>
+                <h2 class="card-title">إضافة منتجات جديدة</h2>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" id="addProductsForm">
+                <div id="productsContainer">
+                    <div class="product-group mb-4 p-3 border rounded" data-product-index="0">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">المنتج #1</h5>
+                            <button type="button" class="btn btn-danger btn-sm remove-product" style="display: none;">
+                                <i class="bi bi-trash"></i> إزالة
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" name="name_0" placeholder="اسم المنتج" required>
+                                    <label>اسم المنتج *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" name="price_0" placeholder="السعر" step="0.01" min="0" required>
+                                    <label>السعر *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" name="category_0">
+                                        <option value="">اختر الفئة</option>
+                                        {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label>الفئة</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="file" class="form-control" name="images_0" accept="image/*" multiple>
+                                    <label>صور المنتج (يمكن اختيار عدة صور)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" name="desc_0" placeholder="وصف المنتج" style="height: 100px;"></textarea>
+                                    <label>وصف المنتج</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <button type="button" class="btn btn-outline-primary" id="addProductBtn">
+                        <i class="bi bi-plus-circle me-2"></i>إضافة منتج آخر
+                    </button>
+                    <div class="text-muted">
+                        <small>يمكنك إضافة عدة منتجات دفعة واحدة</small>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-modern btn-success-modern">
+                    <i class="bi bi-plus-circle me-2"></i>إضافة جميع المنتجات
+                </button>
+            </form>
+        </div>
+
+        <!-- Products Table -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-grid"></i>
+                </div>
+                <h2 class="card-title">المنتجات المضافة</h2>
+                <div class="ms-auto">
+                    <a href="{{ url_for('export_products') }}" class="btn btn-modern btn-outline-primary btn-sm">
+                        <i class="bi bi-download me-1"></i>تصدير
+                    </a>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table modern-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الصورة</th>
+                            <th>
+                                <a href="{{ url_for('admin', search=search_query or '', category=category_filter or '', sort='name', order='ASC' if sort_by == 'name' and sort_order == 'DESC' else 'DESC') }}" class="text-decoration-none">
+                                    اسم المنتج {% if sort_by == 'name' %}<i class="bi bi-arrow-{{ 'down' if sort_order == 'ASC' else 'up' }}"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th>
+                                <a href="{{ url_for('admin', search=search_query or '', category=category_filter or '', sort='price', order='ASC' if sort_by == 'price' and sort_order == 'DESC' else 'DESC') }}" class="text-decoration-none">
+                                    السعر {% if sort_by == 'price' %}<i class="bi bi-arrow-{{ 'down' if sort_order == 'ASC' else 'up' }}"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th>الفئة</th>
+                            <th>الوصف</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in products %}
+                        <tr>
+                            <td><strong>{{ p.id }}</strong></td>
+                            <td>
+                                {% if p.image %}
+                                    <img src="{{ url_for('static', filename=p.image) }}" class="product-image" alt="{{ p.name }}">
+                                {% else %}
+                                    <div class="product-image d-flex align-items-center justify-content-center bg-light">
+                                        <i class="bi bi-image text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ p.name }}</strong></td>
+                            <td><span class="badge bg-success">{{ p.price }} د.ج</span></td>
+                            <td>
+                                {% if p.category_name %}
+                                    <span class="badge bg-primary">{{ p.category_name }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">غير مصنف</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ p.desc[:50] if p.desc else 'لا يوجد وصف' }}{% if p.desc and p.desc|length > 50 %}...{% endif %}</td>
+                            <td>
+                                <a href="{{ url_for('edit_product', pid=p.id) }}" class="btn btn-modern btn-outline-primary btn-sm me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="POST" action="{{ url_for('delete', pid=p.id) }}" 
+                                      onsubmit="return confirm('هل أنت متأكد من حذف هذا المنتج؟');" class="d-inline">
+                                    <button type="submit" class="btn btn-modern btn-danger-modern btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="bi bi-inbox display-4 d-block mb-3"></i>
+                                لا توجد منتجات {% if search_query or category_filter %}مطابقة للبحث{% else %}مضافة بعد{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-receipt"></i>
+                </div>
+                <h2 class="card-title">الطلبات الواردة</h2>
+                <div class="ms-auto">
+                    <a href="{{ url_for('export_orders') }}" class="btn btn-modern btn-outline-success btn-sm">
+                        <i class="bi bi-download me-1"></i>تصدير
+                    </a>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table modern-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>اسم المنتج</th>
+                            <th>الكمية</th>
+                            <th>اسم العميل</th>
+                            <th>رقم الهاتف</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td><strong>#{{ o['id'] }}</strong></td>
+                            <td>{{ o['product_name'] }}</td>
+                            <td><span class="badge bg-primary">{{ o['quantity'] }}</span></td>
+                            <td>{{ o['first_name'] }} {{ o['last_name'] }}</td>
+                            <td>
+                                <a href="tel:{{ o['phone'] }}" class="text-decoration-none">
+                                    <i class="bi bi-telephone me-1"></i>{{ o['phone'] }}
+                                </a>
+                            </td>
+                            <td><span class="badge bg-success">{{ o['total_price'] }} د.ج</span></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="bi bi-cart-x display-4 d-block mb-3"></i>
+                                لا توجد طلبات واردة بعد
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Categories Management -->
+        <div class="admin-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="bi bi-tags"></i>
+                </div>
+                <h2 class="card-title">إدارة الفئات</h2>
+            </div>
+            
+            <form method="POST" action="{{ url_for('add_category') }}" class="mb-4">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="category_name" placeholder="اسم الفئة" required>
+                            <label>اسم الفئة *</label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="category_description" placeholder="وصف الفئة" style="height: 55px;"></textarea>
+                            <label>وصف الفئة</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-modern btn-primary-modern w-100" style="height: 55px;">
+                            <i class="bi bi-plus-circle"></i> إضافة
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="table-responsive">
+                <table class="table modern-table">
+                    <thead>
+                        <tr>
+                            <th>اسم الفئة</th>
+                            <th>الوصف</th>
+                            <th>عدد المنتجات</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td><strong>{{ category.name }}</strong></td>
+                            <td>{{ category.description or 'لا يوجد وصف' }}</td>
+                            <td>
+                                {% set category_products = products|selectattr('category_id', 'equalto', category.id)|list %}
+                                <span class="badge bg-primary">{{ category_products|length }}</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-modern btn-outline-primary btn-sm edit-category-btn" 
+                                        data-id="{{ category.id }}" data-name="{{ category.name }}" data-description="{{ category.description or '' }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                {% if category_products|length == 0 %}
+                                <form method="POST" action="{{ url_for('delete_category', category_id=category.id) }}" 
+                                      onsubmit="return confirm('هل أنت متأكد من حذف هذه الفئة؟');" class="d-inline">
+                                    <button type="submit" class="btn btn-modern btn-danger-modern btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                <i class="bi bi-tags display-4 d-block mb-3"></i>
+                                لا توجد فئات مضافة بعد
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Multi-product form functionality
+        let productIndex = 1;
+        
+        document.getElementById('addProductBtn').addEventListener('click', function() {
+            const container = document.getElementById('productsContainer');
+            const productGroup = document.createElement('div');
+            productGroup.className = 'product-group mb-4 p-3 border rounded';
+            productGroup.setAttribute('data-product-index', productIndex);
+            productGroup.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">المنتج #${productIndex + 1}</h5>
+                    <button type="button" class="btn btn-danger btn-sm remove-product">
+                        <i class="bi bi-trash"></i> إزالة
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="name_${productIndex}" placeholder="اسم المنتج" required>
+                            <label>اسم المنتج *</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="price_${productIndex}" placeholder="السعر" step="0.01" min="0" required>
+                            <label>السعر *</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="category_${productIndex}">
+                                <option value="">اختر الفئة</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label>الفئة</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" name="images_${productIndex}" accept="image/*" multiple>
+                            <label>صور المنتج (يمكن اختيار عدة صور)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="desc_${productIndex}" placeholder="وصف المنتج" style="height: 100px;"></textarea>
+                            <label>وصف المنتج</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(productGroup);
+            
+            // Show remove buttons when there's more than one product
+            if (productIndex > 0) {
+                document.querySelectorAll('.remove-product').forEach(btn => {
+                    btn.style.display = 'block';
+                });
+            }
+            
+            productIndex++;
+            
+            // Add event listener to the new remove button
+            productGroup.querySelector('.remove-product').addEventListener('click', function() {
+                productGroup.remove();
+                
+                // Hide remove buttons if only one product remains
+                const productGroups = document.querySelectorAll('.product-group');
+                if (productGroups.length <= 1) {
+                    document.querySelectorAll('.remove-product').forEach(btn => {
+                        btn.style.display = 'none';
+                    });
+                }
+                
+                // Update product numbers
+                updateProductNumbers();
+            });
+            
+            // Add animation effect
+            productGroup.style.opacity = '0';
+            productGroup.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                productGroup.style.transition = 'all 0.3s ease';
+                productGroup.style.opacity = '1';
+                productGroup.style.transform = 'translateY(0)';
+            }, 10);
+        });
+        
+        // Add event listener to the initial remove button
+        document.querySelector('.remove-product').addEventListener('click', function() {
+            const productGroup = this.closest('.product-group');
+            
+            // Add animation effect before removing
+            productGroup.style.transition = 'all 0.3s ease';
+            productGroup.style.opacity = '0';
+            productGroup.style.transform = 'translateY(-20px)';
+            
+            setTimeout(() => {
+                productGroup.remove();
+                
+                // Hide remove buttons if only one product remains
+                const productGroups = document.querySelectorAll('.product-group');
+                if (productGroups.length <= 1) {
+                    document.querySelectorAll('.remove-product').forEach(btn => {
+                        btn.style.display = 'none';
+                    });
+                }
+                
+                // Update product numbers
+                updateProductNumbers();
+            }, 300);
+        });
+        
+        // Update product numbers when products are added/removed
+        function updateProductNumbers() {
+            const productGroups = document.querySelectorAll('.product-group');
+            productGroups.forEach((group, index) => {
+                group.querySelector('h5').textContent = `المنتج #${index + 1}`;
+                group.setAttribute('data-product-index', index);
+                
+                // Update input names
+                const inputs = group.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    const nameParts = input.name.split('_');
+                    if (nameParts.length === 2) {
+                        const newName = `${nameParts[0]}_${index}`;
+                        input.name = newName;
+                    }
+                });
+            });
+            
+            // Update productIndex to reflect current count
+            productIndex = productGroups.length;
+        }
+        
+        // Form enhancement
+        document.getElementById('addProductsForm').addEventListener('submit', function(e) {
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>جاري الإضافة...';
+            button.disabled = true;
+            
+            // Add a slight delay to show the loading state
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 1000);
+        });
+        
+        // Add file preview functionality
+        document.addEventListener('change', function(e) {
+            if (e.target && e.target.type === 'file' && e.target.name.startsWith('image_')) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Could add image preview functionality here if needed
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+        
+        // Function to edit category
+        function editCategory(id, name, description) {
+            alert('ميزة تعديل الفئات ستكون متاحة في التحديث القادم');
+        }
+        
+        // Add event listeners for edit category buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const editButtons = document.querySelectorAll('.edit-category-btn');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const description = this.getAttribute('data-description');
+                    editCategory(id, name, description);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

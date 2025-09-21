@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>طلب {{ product[1] }}</title>
+</head>
+<body>
+    <h1>طلب المنتج: {{ product[1] }}</h1>
+    <p>السعر: {{ product[2] }} دج</p>
+
+    <!-- الفورم يرسل الطلب لنفس الرابط -->
+    <form method="POST" action="{{ url_for('order', product_id=product[0]) }}">
+        <label>الكمية:</label><br>
+        <input type="number" name="quantity" min="1" required><br><br>
+
+        <label>الاسم:</label><br>
+        <input type="text" name="first_name" required><br><br>
+
+        <label>اللقب:</label><br>
+        <input type="text" name="last_name" required><br><br>
+
+        <label>الولاية:</label><br>
+        <input type="text" name="state" required><br><br>
+
+        <label>رقم الهاتف:</label><br>
+        <input type="text" name="phone" required><br><br>
+
+        <button type="submit">📦 تأكيد الطلب</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('index') }}">⬅ العودة للصفحة الرئيسية</a>
+</body>
+</html>
+

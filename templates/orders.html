@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الطلبات - لوحة التحكم - LUXORA DZ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sidebar-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+            border-right: 3px solid transparent;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(67, 97, 238, 0.05);
+            color: var(--primary-color);
+            border-right-color: var(--primary-color);
+        }
+        
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            margin-right: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #eee;
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-body {
+            padding: 0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--dark-color);
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            padding: 1rem 1.25rem;
+            border-color: #eee;
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 0.4em 0.8em;
+        }
+        
+        .status-badge {
+            padding: 0.4em 0.8em;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background-color: #e2f0fd;
+            color: #004085;
+        }
+        
+        .status-shipped {
+            background-color: #e2f0fd;
+            color: #0c5460;
+        }
+        
+        .status-delivered {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .order-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .order-details h6 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark-color);
+        }
+        
+        .order-details p {
+            margin-bottom: 0.25rem;
+            color: #6c757d;
+        }
+        
+        .action-btns .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            color: var(--secondary-color);
+        }
+        
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                right: calc(-1 * var(--sidebar-width));
+            }
+            
+            .sidebar.show {
+                right: 0;
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+            
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشريط الجانبي -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="sidebar-brand">
+                <img src="{{ url_for('static', filename='uploads/logo.jpg') }}" alt="Logo" style="height: 30px; width: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                <span>LUXORA DZ - لوحة التحكم</span>
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="{{ url_for('admin') }}" class="nav-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>الرئيسية</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('admin') }}#products-section" class="nav-link">
+                        <i class="bi bi-box-seam"></i>
+                        <span>المنتجات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="bi bi-cart-check"></i>
+                        <span>الطلبات</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a href="{{ url_for('logout') }}" class="nav-link text-danger">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>تسجيل الخروج</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <div class="header">
+            <button class="btn btn-outline-secondary d-lg-none" id="sidebarToggle">
+                <i class="bi bi-list"></i>
+            </button>
+            <h1 class="page-title">
+                <i class="bi bi-cart-check"></i>
+                <span>إدارة الطلبات</span>
+            </h1>
+            <div class="user-menu">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none" id="userDropdown" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-avatar">{{ session.get('admin_username', 'A')|first|upper }}</div>
+                        <span class="d-none d-md-inline ms-2">{{ session.get('admin_username', 'المشرف') }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>الإعدادات</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-left me-2"></i>تسجيل الخروج</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('admin') }}" class="back-link">
+            <i class="bi bi-arrow-right"></i> العودة للوحة التحكم
+        </a>
+        
+        <div class="card">
+            <div class="card-header">
+                <span><i class="bi bi-list-check me-2"></i>قائمة الطلبات</span>
+                <div class="d-flex align-items-center">
+                    <div class="input-group input-group-sm" style="max-width: 250px;">
+                        <input type="text" class="form-control" placeholder="بحث...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>رقم الطلب</th>
+                                <th>المنتج</th>
+                                <th>الكمية</th>
+                                <th>المجموع</th>
+                                <th>العميل</th>
+                                <th>الحالة</th>
+                                <th>التاريخ</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>#{{ order[0] }}</td>
+                                <td>{{ order[1] }}</td>
+                                <td>{{ order[2] }}</td>
+                                <td>{{ order[2] * order[3] }} د.م</td>
+                                <td>{{ order[4] }} {{ order[5] }}</td>
+                                <td>
+                                    <span class="status-badge status-pending">
+                                        <i class="bi bi-hourglass-split"></i> قيد الانتظار
+                                    </span>
+                                </td>
+                                <td>{{ order[8] if order|length > 8 else 'غير محدد' }}</td>
+                                <td class="action-btns">
+                                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderDetails{{ order[0] }}">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <a href="#" class="btn btn-sm btn-outline-success" title="تم التوصيل">
+                                        <i class="bi bi-check-lg"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger" title="إلغاء الطلب">
+                                        <i class="bi bi-x-lg"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <!-- Modal for Order Details -->
+                            <div class="modal fade" id="orderDetails{{ order[0] }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">تفاصيل الطلب #{{ order[0] }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="order-details">
+                                                        <h6>معلومات العميل</h6>
+                                                        <p><strong>الاسم:</strong> {{ order[4] }} {{ order[5] }}</p>
+                                                        <p><strong>المدينة:</strong> {{ order[6] }}</p>
+                                                        <p><strong>رقم الهاتف:</strong> {{ order[7] }}</p>
+                                                        <p><strong>البريد الإلكتروني:</strong> {{ order[9] if order|length > 9 else 'غير متوفر' }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="order-details">
+                                                        <h6>تفاصيل الطلب</h6>
+                                                        <p><strong>رقم الطلب:</strong> #{{ order[0] }}</p>
+                                                        <p><strong>تاريخ الطلب:</strong> {{ order[8] if order|length > 8 else 'غير محدد' }}</p>
+                                                        <p><strong>حالة الطلب:</strong> 
+                                                            <span class="status-badge status-pending">
+                                                                <i class="bi bi-hourglass-split"></i> قيد الانتظار
+                                                            </span>
+                                                        </p>
+                                                        <p><strong>طريقة الدفع:</strong> الدفع عند الاستلام</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="order-details mt-3">
+                                                <h6>المنتجات المطلوبة</h6>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>المنتج</th>
+                                                                <th>الكمية</th>
+                                                                <th>السعر</th>
+                                                                <th>المجموع</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>{{ order[1] }}</td>
+                                                                <td>{{ order[2] }}</td>
+                                                                <td>{{ order[3] }} د.م</td>
+                                                                <td>{{ order[2] * order[3] }} د.م</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="3" class="text-end"><strong>المجموع النهائي:</strong></td>
+                                                                <td><strong>{{ order[2] * order[3] }} د.م</strong></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                                            <button type="button" class="btn btn-primary">حفظ التغييرات</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    <div class="text-muted">لا توجد طلبات مسجلة بعد</div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">التالي</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر فتح القائمة الجانبية على الأجهزة الصغيرة -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // تفعيل القائمة الجانبية على الأجهزة الصغيرة
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    sidebarOverlay.classList.toggle('show');
+                });
+            }
+            
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    this.classList.remove('show');
+                });
+            }
+            
+            // إغلاق القائمة الجانبية عند النقر على رابط
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.remove('show');
+                        sidebarOverlay.classList.remove('show');
+                    }
+                });
+            });
+            
+            // تفعيل tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Product Requests Management - LUXORA DZ{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-inbox"></i> Product Requests - LUXORA DZ</h2>
+                <div>
+                    <a href="{{ url_for('admin') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Admin
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            {% set pending_count = requests|selectattr('status', 'equalto', 'pending')|list|length %}
+            {% set approved_count = requests|selectattr('status', 'equalto', 'approved')|list|length %}
+            {% set completed_count = requests|selectattr('status', 'equalto', 'completed')|list|length %}
+            {% set total_count = requests|length %}
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-warning">Pending</h5>
+                            <h2 class="text-warning">{{ pending_count }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-success">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-success">Approved</h5>
+                            <h2 class="text-success">{{ approved_count }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-primary">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-primary">Completed</h5>
+                            <h2 class="text-primary">{{ completed_count }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-info">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-info">Total</h5>
+                            <h2 class="text-info">{{ total_count }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requests Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> All Product Requests</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if requests %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Customer</th>
+                                    <th>Contact</th>
+                                    <th>Location</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in requests %}
+                                <tr id="request-{{ req.id }}">
+                                    <td><strong>#{{ req.id }}</strong></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if req.product_image %}
+                                            <img src="{{ url_for('static', filename=req.product_image) }}" 
+                                                 alt="{{ req.product_name }}" 
+                                                 class="rounded me-2" 
+                                                 style="width: 40px; height: 40px; object-fit: cover;">
+                                            {% endif %}
+                                            <div>
+                                                <div class="fw-bold">{{ req.product_name }}</div>
+                                                <small class="text-muted">{{ "%.2f"|format(req.unit_price) }} د.ج each</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="fw-bold">{{ req.user_name }}</div>
+                                            {% if req.email %}
+                                            <small class="text-muted">{{ req.email }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>{{ req.phone }}</div>
+                                        {% if req.address %}
+                                        <small class="text-muted">{{ req.address[:30] }}{% if req.address|length > 30 %}...{% endif %}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td><span class="badge bg-secondary">{{ req.state }}</span></td>
+                                    <td><span class="badge bg-info">{{ req.quantity }}</span></td>
+                                    <td><strong>{{ "%.2f"|format(req.total_price) }} د.ج</strong></td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if req.status == 'pending' %}bg-warning{% endif %}
+                                            {% if req.status == 'approved' %}bg-success{% endif %}
+                                            {% if req.status == 'rejected' %}bg-danger{% endif %}
+                                            {% if req.status == 'completed' %}bg-primary{% endif %}
+                                            {% if req.status == 'ordered' %}bg-info{% endif %}">
+                                            {{ req.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <small>{{ req.created_at[:16] if req.created_at else 'N/A' }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <!-- Status Change Dropdown -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-primary btn-sm dropdown-toggle" 
+                                                        type="button" 
+                                                        data-bs-toggle="dropdown" 
+                                                        aria-expanded="false">
+                                                    Change Status
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#" onclick="updateStatus({{ req.id }}, 'pending')">Pending</a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="updateStatus({{ req.id }}, 'approved')">Approved</a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="updateStatus({{ req.id }}, 'rejected')">Rejected</a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="updateStatus({{ req.id }}, 'completed')">Completed</a></li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <!-- View Details Button -->
+                                            <button type="button" class="btn btn-outline-info btn-sm" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#requestModal"
+                                                    onclick="showRequestDetails({{ req.id }}, '{{ req.product_name }}', '{{ req.user_name }}', '{{ req.phone }}', '{{ req.email or '' }}', '{{ req.state }}', '{{ req.address or '' }}', {{ req.quantity }}, {{ req.total_price }}, '{{ req.status }}', '{{ req.message or '' }}', '{{ req.created_at or '' }}')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-3x text-muted"></i>
+                        <h4 class="text-muted mt-3">No Product Requests</h4>
+                        <p class="text-muted">No product requests have been submitted yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Request Details Modal -->
+<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestModalLabel">Request Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+function showRequestDetails(id, productName, userName, phone, email, state, address, quantity, totalPrice, status, message, createdAt) {
+    const modalBody = document.getElementById('modalBody');
+    modalBody.innerHTML = `
+        <div class="row">
+            <div class="col-md-6">
+                <h6><i class="fas fa-info-circle"></i> Request Information</h6>
+                <table class="table table-sm table-borderless">
+                    <tr><td><strong>Request ID:</strong></td><td>#${id}</td></tr>
+                    <tr><td><strong>Product:</strong></td><td>${productName}</td></tr>
+                    <tr><td><strong>Quantity:</strong></td><td>${quantity}</td></tr>
+                    <tr><td><strong>Total Price:</strong></td><td>${totalPrice.toFixed(2)} د.ج</td></tr>
+                    <tr><td><strong>Status:</strong></td><td><span class="badge bg-primary">${status}</span></td></tr>
+                    <tr><td><strong>Date:</strong></td><td>${createdAt}</td></tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="fas fa-user"></i> Customer Information</h6>
+                <table class="table table-sm table-borderless">
+                    <tr><td><strong>Name:</strong></td><td>${userName}</td></tr>
+                    <tr><td><strong>Phone:</strong></td><td>${phone}</td></tr>
+                    <tr><td><strong>Email:</strong></td><td>${email || 'Not provided'}</td></tr>
+                    <tr><td><strong>State:</strong></td><td>${state}</td></tr>
+                    <tr><td><strong>Address:</strong></td><td>${address || 'Not provided'}</td></tr>
+                </table>
+            </div>
+        </div>
+        ${message ? `
+        <div class="mt-3">
+            <h6><i class="fas fa-comment"></i> Customer Message</h6>
+            <div class="border rounded p-3 bg-light">
+                ${message}
+            </div>
+        </div>
+        ` : ''}
+    `;
+}
+
+function updateStatus(requestId, newStatus) {
+    if (!confirm(`Are you sure you want to change the status to "${newStatus}"?`)) {
+        return;
+    }
+
+    // Make API call to update status
+    fetch(`/api/product-requests/${requestId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            status: newStatus
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the status badge in the table
+            const row = document.getElementById(`request-${requestId}`);
+            const statusCell = row.children[7]; // Status column
+            
+            let badgeClass = 'bg-secondary';
+            if (newStatus === 'pending') badgeClass = 'bg-warning';
+            else if (newStatus === 'approved') badgeClass = 'bg-success';
+            else if (newStatus === 'rejected') badgeClass = 'bg-danger';
+            else if (newStatus === 'completed') badgeClass = 'bg-primary';
+            else if (newStatus === 'ordered') badgeClass = 'bg-info';
+            
+            statusCell.innerHTML = `<span class="badge ${badgeClass}">${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}</span>`;
+            
+            // Show success message
+            alert('Status updated successfully!');
+        } else {
+            alert('Error updating status: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating status. Please try again.');
+    });
+}
+</script>
+{% endblock %}
