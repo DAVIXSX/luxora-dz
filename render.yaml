@@ -17,9 +17,9 @@ services:
       - key: FLASK_DEBUG
         value: False
       - key: ADMIN_USERNAME
-        sync: false  # You'll need to set this manually in Render dashboard
+        value: youcef
       - key: ADMIN_PASSWORD
-        sync: false  # You'll need to set this manually in Render dashboard
+        value: kadari
     disk:
       name: luxora-dz-disk
       mountPath: /opt/render/project/src

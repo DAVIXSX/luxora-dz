@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import logging
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, Response
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,6 +11,9 @@ import io
 # Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your-fallback-secret-key-change-this')
@@ -30,97 +34,106 @@ def get_db_connection():
     return conn
 
 def init_db():
-    print(f"[DEBUG] Initializing database at: {DB_PATH}")
-    print(f"[DEBUG] Admin credentials from env: username='{ADMIN_USERNAME}', password_length={len(ADMIN_PASSWORD)}")
-    with get_db_connection() as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS products (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                price REAL NOT NULL DEFAULT 0,
-                desc TEXT,
-                image TEXT,
-                category_id INTEGER,
-                FOREIGN KEY(category_id) REFERENCES categories(id)
-            )
-        """)
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS orders (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                product_id INTEGER,
-                quantity INTEGER,
-                first_name TEXT,
-                last_name TEXT,
-                state TEXT,
-                phone TEXT,
-                email TEXT,
-                address TEXT,
-                notes TEXT,
-                total_price REAL,
-                FOREIGN KEY(product_id) REFERENCES products(id)
-            )
-        """)
-        # Product requests table for inquiries
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS product_requests (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                product_id INTEGER NOT NULL,
-                user_name TEXT NOT NULL,
-                email TEXT,
-                phone TEXT NOT NULL,
-                state TEXT NOT NULL,
-                address TEXT,
-                quantity INTEGER NOT NULL DEFAULT 1,
-                message TEXT,
-                status TEXT DEFAULT 'pending',
-                total_price REAL,
-                created_at DATETIME NOT NULL DEFAULT (datetime('now')),
-                FOREIGN KEY(product_id) REFERENCES products(id)
-            )
-        """)
-        # Admins table for authentication
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS admins (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
-                password_hash TEXT NOT NULL
-            )
-        """)
-        # Add categories table
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS categories (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL UNIQUE,
-                description TEXT
-            )
-        """)
-        # Add product_images table for multiple images per product
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS product_images (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                product_id INTEGER NOT NULL,
-                image_path TEXT NOT NULL,
-                is_primary BOOLEAN DEFAULT FALSE,
-                FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
-            )
-        """)
-        # Seed default admin if not exists
-        result = conn.execute(
-            "INSERT OR IGNORE INTO admins (username, password_hash) VALUES (?, ?)",
-            (ADMIN_USERNAME, generate_password_hash(ADMIN_PASSWORD))
-        )
-        print(f"[DEBUG] Admin user seeding - rows affected: {result.rowcount}")
+    """Initialize database with proper error handling for production"""
+    try:
+        logging.info(f"Initializing database at: {DB_PATH}")
+        logging.info(f"Admin credentials from env: username='{ADMIN_USERNAME}', password_length={len(ADMIN_PASSWORD)}")
         
-        # Check what users exist in the database
-        existing_admins = conn.execute("SELECT username FROM admins").fetchall()
-        print(f"[DEBUG] Existing admin users: {[admin['username'] for admin in existing_admins]}")
-        # Seed default categories if not exist
-        try:
-            conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("إلكترونيات",))
-            conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("أجهزة منزلية",))
-            conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("إكسسوارات",))
-        except:
-            pass
+        with get_db_connection() as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS products (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    price REAL NOT NULL DEFAULT 0,
+                    desc TEXT,
+                    image TEXT,
+                    category_id INTEGER,
+                    FOREIGN KEY(category_id) REFERENCES categories(id)
+                )
+            """)
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS orders (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    product_id INTEGER,
+                    quantity INTEGER,
+                    first_name TEXT,
+                    last_name TEXT,
+                    state TEXT,
+                    phone TEXT,
+                    email TEXT,
+                    address TEXT,
+                    notes TEXT,
+                    total_price REAL,
+                    FOREIGN KEY(product_id) REFERENCES products(id)
+                )
+            """)
+            # Product requests table for inquiries
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS product_requests (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    product_id INTEGER NOT NULL,
+                    user_name TEXT NOT NULL,
+                    email TEXT,
+                    phone TEXT NOT NULL,
+                    state TEXT NOT NULL,
+                    address TEXT,
+                    quantity INTEGER NOT NULL DEFAULT 1,
+                    message TEXT,
+                    status TEXT DEFAULT 'pending',
+                    total_price REAL,
+                    created_at DATETIME NOT NULL DEFAULT (datetime('now')),
+                    FOREIGN KEY(product_id) REFERENCES products(id)
+                )
+            """)
+            # Admins table for authentication
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS admins (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT UNIQUE NOT NULL,
+                    password_hash TEXT NOT NULL
+                )
+            """)
+            # Add categories table
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS categories (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL UNIQUE,
+                    description TEXT
+                )
+            """)
+            # Add product_images table for multiple images per product
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS product_images (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    product_id INTEGER NOT NULL,
+                    image_path TEXT NOT NULL,
+                    is_primary BOOLEAN DEFAULT FALSE,
+                    FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
+                )
+            """)
+            # Seed default admin if not exists
+            result = conn.execute(
+                "INSERT OR IGNORE INTO admins (username, password_hash) VALUES (?, ?)",
+                (ADMIN_USERNAME, generate_password_hash(ADMIN_PASSWORD))
+            )
+            logging.info(f"Admin user seeding - rows affected: {result.rowcount}")
+            
+            # Check what users exist in the database
+            existing_admins = conn.execute("SELECT username FROM admins").fetchall()
+            logging.info(f"Existing admin users: {[admin['username'] for admin in existing_admins]}")
+            # Seed default categories if not exist
+            try:
+                conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("إلكترونيات",))
+                conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("أجهزة منزلية",))
+                conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("إكسسوارات",))
+                conn.commit()
+                logging.info("Database initialization completed successfully")
+            except Exception as e:
+                logging.error(f"Error seeding default categories: {e}")
+                pass
+    except Exception as e:
+        logging.error(f"Database initialization failed: {e}")
+        raise
 init_db()
 
 # الصفحة الرئيسية - عرض المنتجات
@@ -894,6 +907,29 @@ def delete(pid):
         print("Error deleting product:", e)
         flash("حدث خطأ أثناء الحذف.", "error")
     return redirect(url_for("admin"))
+
+# Health check route for monitoring
+@app.route("/health")
+def health_check():
+    """Simple health check endpoint"""
+    try:
+        # Test database connection
+        with get_db_connection() as conn:
+            conn.execute("SELECT 1").fetchone()
+        
+        return jsonify({
+            "status": "healthy",
+            "timestamp": datetime.now().isoformat(),
+            "service": "luxora-dz"
+        }), 200
+    except Exception as e:
+        logging.error(f"Health check failed: {e}")
+        return jsonify({
+            "status": "unhealthy",
+            "error": str(e),
+            "timestamp": datetime.now().isoformat(),
+            "service": "luxora-dz"
+        }), 503
 
 if __name__ == "__main__":
     # For local development
