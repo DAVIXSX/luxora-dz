@@ -30,6 +30,8 @@ def get_db_connection():
     return conn
 
 def init_db():
+    print(f"[DEBUG] Initializing database at: {DB_PATH}")
+    print(f"[DEBUG] Admin credentials from env: username='{ADMIN_USERNAME}', password_length={len(ADMIN_PASSWORD)}")
     with get_db_connection() as conn:
         conn.execute("""
             CREATE TABLE IF NOT EXISTS products (
@@ -103,10 +105,15 @@ def init_db():
             )
         """)
         # Seed default admin if not exists
-        conn.execute(
+        result = conn.execute(
             "INSERT OR IGNORE INTO admins (username, password_hash) VALUES (?, ?)",
             (ADMIN_USERNAME, generate_password_hash(ADMIN_PASSWORD))
         )
+        print(f"[DEBUG] Admin user seeding - rows affected: {result.rowcount}")
+        
+        # Check what users exist in the database
+        existing_admins = conn.execute("SELECT username FROM admins").fetchall()
+        print(f"[DEBUG] Existing admin users: {[admin['username'] for admin in existing_admins]}")
         # Seed default categories if not exist
         try:
             conn.execute("INSERT OR IGNORE INTO categories (name) VALUES (?)", ("إلكترونيات",))
