@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: luxora-dz
+    env: python
+    plan: free
+    # Use the main branch for deployment
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --config gunicorn.conf.py app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.7
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: False
+      - key: ADMIN_USERNAME
+        sync: false  # You'll need to set this manually in Render dashboard
+      - key: ADMIN_PASSWORD
+        sync: false  # You'll need to set this manually in Render dashboard
+    disk:
+      name: luxora-dz-disk
+      mountPath: /opt/render/project/src
+      sizeGB: 1
