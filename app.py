@@ -851,6 +851,35 @@ def admin_requests():
     
     return render_template("admin_requests.html", requests=requests)
 
+# Temporary debug route to reset admin user (REMOVE IN PRODUCTION)
+@app.route("/debug/reset-admin", methods=["GET"])
+def debug_reset_admin():
+    """Temporary route to reset admin user - REMOVE IN PRODUCTION"""
+    try:
+        with get_db_connection() as conn:
+            # Delete existing admin
+            conn.execute("DELETE FROM admins WHERE username = ?", (ADMIN_USERNAME,))
+            # Create new admin
+            conn.execute(
+                "INSERT INTO admins (username, password_hash) VALUES (?, ?)",
+                (ADMIN_USERNAME, generate_password_hash(ADMIN_PASSWORD))
+            )
+            conn.commit()
+            
+            # Check what users exist now
+            existing_admins = conn.execute("SELECT username FROM admins").fetchall()
+            
+        return f"""
+        <h1>Admin Reset Complete</h1>
+        <p>Username: {ADMIN_USERNAME}</p>
+        <p>Password Length: {len(ADMIN_PASSWORD)}</p>
+        <p>Existing Users: {[admin['username'] for admin in existing_admins]}</p>
+        <p><a href="/login">Try Login</a></p>
+        <p><strong>WARNING: Remove this route in production!</strong></p>
+        """
+    except Exception as e:
+        return f"Error: {e}"
+
 # حذف منتج
 @app.route("/delete/<int:pid>", methods=["POST"])
 def delete(pid):
