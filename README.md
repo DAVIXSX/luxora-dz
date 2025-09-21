@@ -60,6 +60,11 @@ pip install -r requirements.txt
 ```bash
 # Copy .env.example to .env and configure your settings
 cp .env.example .env
+
+# IMPORTANT: Edit .env and set your own secure values:
+# - SECRET_KEY: Use a long, random string
+# - ADMIN_USERNAME: Your admin username
+# - ADMIN_PASSWORD: A strong password
 ```
 
 6. Initialize the database:
@@ -172,6 +177,24 @@ For production deployment, consider:
 3. Using a production database (PostgreSQL, MySQL)
 4. Configuring proper environment variables
 5. Setting up SSL/HTTPS
+
+## Security
+
+⚠️ **IMPORTANT SECURITY NOTES**:
+
+1. **Environment Variables**: Never commit `.env` files to version control. Always use `.env.example` as a template.
+
+2. **Admin Credentials**: Change the default admin username and password in your `.env` file before deployment.
+
+3. **Secret Key**: Use a long, random string for `SECRET_KEY` in production. You can generate one using:
+   ```python
+   import secrets
+   print(secrets.token_hex(32))
+   ```
+
+4. **Database**: The SQLite database file (`database.db`) is excluded from version control for security.
+
+5. **Production**: Never run with `FLASK_DEBUG=True` in production.
 
 ## Contributing
 

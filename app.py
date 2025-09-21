@@ -7,16 +7,21 @@ from datetime import datetime
 import csv
 import io
 
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = "mysecretkey"  # غيّره عندك
+app.secret_key = os.getenv('SECRET_KEY', 'your-fallback-secret-key-change-this')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join("static", "uploads")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 os.makedirs(os.path.join(BASE_DIR, UPLOAD_FOLDER), exist_ok=True)
 
-ADMIN_USERNAME = "luxoradz"
-ADMIN_PASSWORD = "kadari"
+# Load admin credentials from environment variables
+ADMIN_USERNAME = os.getenv('ADMIN_USERNAME', 'admin')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'changeme')
 DB_PATH = os.path.join(BASE_DIR, "database.db")
 
 def get_db_connection():
